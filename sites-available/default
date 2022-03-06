@@ -289,7 +289,7 @@ authorize {
 	#
 	#  See policy.d/filter for the definition of the filter_username policy.
 	#
-	filter_username
+#	filter_username
 
 	#
 	#  Some broken equipment sends passwords with embedded zeros.

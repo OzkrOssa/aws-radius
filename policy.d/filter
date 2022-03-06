@@ -15,82 +15,82 @@ deny_realms {
 #  issues where the back-end database is "forgiving" about
 #  what constitutes a user name.
 #
-filter_username {
-	if (&User-Name) {
-		#
-		#  reject mixed case e.g. "UseRNaMe"
-		#
-		#if (&User-Name != "%{tolower:%{User-Name}}") {
-		#	reject
-		#}
-
-		#
-		#  reject all whitespace
-		#  e.g. "user@ site.com", or "us er", or " user", or "user "
-		#
-		if (&User-Name =~ / /) {
-			update request {
-				&Module-Failure-Message += 'Rejected: User-Name contains whitespace'
-			}
-			reject
-		}
-
-		#
-		#  reject Multiple @'s
-		#  e.g. "user@site.com@site.com"
-		#
-		if (&User-Name =~ /@[^@]*@/ ) {
-			update request {
-				&Module-Failure-Message += 'Rejected: Multiple @ in User-Name'
-			}
-			reject
-		}
-
-		#
-		#  reject double dots
-		#  e.g. "user@site..com"
-		#
-		if (&User-Name =~ /\.\./ ) {
-			update request {
-				&Module-Failure-Message += 'Rejected: User-Name contains multiple ..s'
-			}
-			reject
-		}
-
-		#
-		#  must have at least 1 string-dot-string after @
-		#  e.g. "user@site.com"
-		#
-		if ((&User-Name =~ /@/) && (&User-Name !~ /@(.+)\.(.+)$/))  {
-			update request {
-				&Module-Failure-Message += 'Rejected: Realm does not have at least one dot separator'
-			}
-			reject
-		}
-
-		#
-		#  Realm ends with a dot
-		#  e.g. "user@site.com."
-		#
-		if (&User-Name =~ /\.$/)  {
-			update request {
-				&Module-Failure-Message += 'Rejected: Realm ends with a dot'
-			}
-			reject
-		}
-
-		#
-		#  Realm begins with a dot
-		#  e.g. "user@.site.com"
-		#
-		if (&User-Name =~ /@\./)  {
-			update request {
-				&Module-Failure-Message += 'Rejected: Realm begins with a dot'
-			}
-			reject
-		}
-	}
-}
+#filter_username {
+#	if (&User-Name) {
+#		#
+#		#  reject mixed case e.g. "UseRNaMe"
+#		#
+#		#if (&User-Name != "%{tolower:%{User-Name}}") {
+#		#	reject
+#		#}
+#
+#		#
+#		#  reject all whitespace
+#		#  e.g. "user@ site.com", or "us er", or " user", or "user "
+#		#
+#		if (&User-Name =~ / /) {
+#			update request {
+#				&Module-Failure-Message += 'Rejected: User-Name contains whitespace'
+#			}
+#			reject
+#		}
+#
+#		#
+#		#  reject Multiple @'s
+#		#  e.g. "user@site.com@site.com"
+#		#
+#		if (&User-Name =~ /@[^@]*@/ ) {
+#			update request {
+#				&Module-Failure-Message += 'Rejected: Multiple @ in User-Name'
+#			}
+#			reject
+#		}
+#
+#		#
+#		#  reject double dots
+#		#  e.g. "user@site..com"
+#		#
+#		if (&User-Name =~ /\.\./ ) {
+#			update request {
+#				&Module-Failure-Message += 'Rejected: User-Name contains multiple ..s'
+#			}
+#			reject
+#		}
+#
+#		#
+#		#  must have at least 1 string-dot-string after @
+#		#  e.g. "user@site.com"
+#		#
+#		if ((&User-Name =~ /@/) && (&User-Name !~ /@(.+)\.(.+)$/))  {
+#			update request {
+#				&Module-Failure-Message += 'Rejected: Realm does not have at least one dot separator'
+#			}
+#			reject
+#		}
+#
+#		#
+#		#  Realm ends with a dot
+#		#  e.g. "user@site.com."
+#		#
+#		if (&User-Name =~ /\.$/)  {
+#			update request {
+#				&Module-Failure-Message += 'Rejected: Realm ends with a dot'
+#			}
+#			reject
+#		}
+#
+#		#
+#		#  Realm begins with a dot
+#		#  e.g. "user@.site.com"
+#		#
+#		if (&User-Name =~ /@\./)  {
+#			update request {
+#				&Module-Failure-Message += 'Rejected: Realm begins with a dot'
+#			}
+#			reject
+#		}
+#	}
+#}
 
 #
 #	Filter the User-Password
